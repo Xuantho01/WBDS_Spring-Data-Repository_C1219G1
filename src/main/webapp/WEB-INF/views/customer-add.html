@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="/customer-add" method="post">
+        <input name="firstName" type="text" />
+        <input name="lastName"  type="text" />
+        <select name="customerType">
+            <option
+                    th:each="type: ${customerTypes}"
+                    th:value="${type.id}"
+                    th:text="${type.name}">
+            </option>
+        </select>
+        <button>Save</button>
+    </form>
+</body>
+</html>
