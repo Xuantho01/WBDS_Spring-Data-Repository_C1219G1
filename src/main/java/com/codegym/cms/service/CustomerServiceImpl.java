@@ -45,4 +45,13 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerType> findAllCustomerType() {
         return (List<CustomerType>) customerTypeRepository.findAll();
     }
+
+    @Override
+    public CustomerType findCustomerTypeById(Long id) {
+        Optional<CustomerType> customerTypeOptional = customerTypeRepository.findById(id);
+        if (customerTypeOptional.isPresent()) {
+            return customerTypeOptional.get();
+        }
+        throw new RuntimeException("Không tìm thấy kiểu khách hàng có ID là " + id);
+    }
 }

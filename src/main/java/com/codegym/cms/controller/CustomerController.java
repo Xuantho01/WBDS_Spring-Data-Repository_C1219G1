@@ -5,6 +5,7 @@ import com.codegym.cms.model.CustomerType;
 import com.codegym.cms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +22,16 @@ public class CustomerController {
 
     @GetMapping("/customer-list")
     public ModelAndView getCustomerList() {
+        // Before Advice
+        // logger.log(...)
         ModelAndView modelAndView = new ModelAndView("customer-list");
 
-        List<Customer> customers = customerService.findAll();
+        List<Customer> customers = customerService.findAll(); // --->throw Exception. After Throwing
+        // logger.log(...)
 
         modelAndView.addObject("customerList", customers);
-        return  modelAndView;
+        // logger.log(...)
+        return  modelAndView; // After Returning
     }
 
     @GetMapping("/customer-add")
@@ -34,12 +39,19 @@ public class CustomerController {
         ModelAndView mv = new ModelAndView("customer-add");
         List<CustomerType> customerTypes = customerService.findAllCustomerType();
 
+        mv.addObject("customer", new Customer());
         mv.addObject("customerTypes", customerTypes);
 
         return mv;
     }
 
     @PostMapping("/customer-add")
+    public String addCustomer(@ModelAttribute Customer customer, BindingResult bindingResult) {
+        customerService.save(customer);
+        return "redirect:/customer-list";
+    }
+
+    /*@PostMapping("/customer-add")
     public String addCustomer(@RequestParam String firstName,
                               @RequestParam String lastName,
                               @RequestParam("customerType") Long customerTypeId) {
@@ -56,5 +68,5 @@ public class CustomerController {
         customerService.save(customer);
 
         return "redirect:/customer-list";
-    }
+    }*/
 }

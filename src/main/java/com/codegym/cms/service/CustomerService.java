@@ -15,4 +15,5 @@ public interface CustomerService {
     void remove(Long id);
 
     List<CustomerType> findAllCustomerType();
+    CustomerType findCustomerTypeById(Long id);
 }

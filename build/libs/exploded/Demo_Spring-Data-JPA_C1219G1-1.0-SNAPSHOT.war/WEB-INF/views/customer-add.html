@@ -6,10 +6,10 @@
 </head>
 <body>
 
-    <form action="/customer-add" method="post">
-        <input name="firstName" type="text" />
-        <input name="lastName"  type="text" />
-        <select name="customerType">
+    <form action="/customer-add" method="post" th:object="${customer}">
+        <input th:field="*{firstName}" />
+        <input th:field="*{lastName}" />
+        <select th:field="*{customerType}">
             <option
                     th:each="type: ${customerTypes}"
                     th:value="${type.id}"

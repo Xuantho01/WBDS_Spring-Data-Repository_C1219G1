@@ -1,7 +1,9 @@
 package com.codegym.cms;
 
+import com.codegym.cms.formatter.CustomerTypeFormatter;
 import com.codegym.cms.service.CustomerService;
 import com.codegym.cms.service.CustomerServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,6 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -17,6 +23,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -26,6 +33,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Properties;
 
 @Configuration
@@ -33,7 +41,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("com.codegym.cms")
 @EnableJpaRepositories("com.codegym.cms.repository")
-public class ApplicationConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+//@EnableSpringDataWebSupport
+public class ApplicationConfig extends WebMvcConfigurationSupport implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -109,4 +118,32 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     public CustomerService customerService() {
         return new CustomerServiceImpl();
     }
+
+    @Bean
+    public CustomerTypeFormatter customerTypeFormatter() {
+        return new CustomerTypeFormatter(customerService());
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(customerTypeFormatter());
+    }
+
+//    @Bean
+//    public ObjectMapper getObjectMapper() {
+//        return new ObjectMapper();
+//    }
+//
+//    @Bean
+//    public MappingJackson2HttpMessageConverter messageConverter() {
+//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//        converter.setObjectMapper(getObjectMapper());
+//        return converter;
+//    }
+//
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        converters.add(messageConverter());
+//        addDefaultHttpMessageConverters(converters);
+//    }
 }

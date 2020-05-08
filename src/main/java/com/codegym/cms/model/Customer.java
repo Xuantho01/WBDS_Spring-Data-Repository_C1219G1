@@ -1,6 +1,9 @@
 package com.codegym.cms.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Customer {
@@ -9,8 +12,16 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 300)
+    @NotBlank
+    @Pattern(regexp = "[A-Za-z\\s]{1,300}")
+    @Size(max = 300)
     private String firstName;
+
+    @Column(length = 300)
+    @NotBlank
+    @Pattern(regexp = "[A-Za-z\\s]{1,300}")
+    @Size(max = 300)
     private String lastName;
 
     public CustomerType getCustomerType() {
