@@ -1,5 +1,6 @@
 package com.codegym.cms;
 
+import com.codegym.cms.aspect.MyLogger;
 import com.codegym.cms.formatter.CustomerTypeFormatter;
 import com.codegym.cms.service.CustomerService;
 import com.codegym.cms.service.CustomerServiceImpl;
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
@@ -42,6 +44,7 @@ import java.util.Properties;
 @ComponentScan("com.codegym.cms")
 @EnableJpaRepositories("com.codegym.cms.repository")
 //@EnableSpringDataWebSupport
+@EnableAspectJAutoProxy
 public class ApplicationConfig extends WebMvcConfigurationSupport implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
@@ -127,6 +130,11 @@ public class ApplicationConfig extends WebMvcConfigurationSupport implements App
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(customerTypeFormatter());
+    }
+
+    @Bean
+    public MyLogger myLogger() {
+        return new MyLogger();
     }
 
 //    @Bean
