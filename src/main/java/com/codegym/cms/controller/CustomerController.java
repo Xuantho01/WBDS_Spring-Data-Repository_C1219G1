@@ -6,12 +6,12 @@ import com.codegym.cms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -21,17 +21,40 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/customer-list")
-    public ModelAndView getCustomerList() {
+    public ModelAndView getCustomerList(@CookieValue("starredCustomer") String starredCustomer) {
         // Before Advice
         // logger.log(...)
         ModelAndView modelAndView = new ModelAndView("customer-list");
 
+        String[] customerIds = starredCustomer.split("\\|");
+
         List<Customer> customers = customerService.findAll(); // --->throw Exception. After Throwing
+        boolean[] isStarred = new boolean[customers.size()];
+        for (int i = 0; i < customers.size(); i++) {
+            Customer customer = customers.get(i);
+            for (String customerId : customerIds) {
+                if (customer.getId() == Long.parseLong(customerId)) {
+                    isStarred[i] = true;
+                }
+            }
+        }
         // logger.log(...)
 
         modelAndView.addObject("customerList", customers);
+        modelAndView.addObject("isStarred", isStarred);
         // logger.log(...)
         return  modelAndView; // After Returning
+    }
+
+    @PostMapping("/customer-list")
+    public ModelAndView saveStarredCustomer(@RequestParam String starredCustomer, HttpServletResponse res) {
+        System.out.println(starredCustomer);
+        String savedCookieValue = starredCustomer.toString().replace(',','|');
+
+        res.addCookie(new Cookie("starredCustomer", savedCookieValue));
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/customer-list");
+        return  modelAndView;
     }
 
     @GetMapping("/customer-add")
