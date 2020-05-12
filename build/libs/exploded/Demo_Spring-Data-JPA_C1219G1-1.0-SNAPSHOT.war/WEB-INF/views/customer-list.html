@@ -6,20 +6,33 @@
 </head>
 <body>
 
-<table>
-    <tr>
-        <td>First Name</td>
-        <td>Last Name</td>
-        <td>Type</td>
-    </tr>
+<form action="/customer-list" method="post">
+    <table>
+        <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Type</td>
+            <td>Starred</td>
+        </tr>
 
-    <tr th:each="customer : ${customerList}">
-        <td th:text="${customer.firstName}"></td>
-        <td th:text="${customer.lastName}"></td>
-        <td th:text="${customer.customerType.name}"></td>
-    </tr>
+        <tr th:each="customer, iter : ${customerList}">
+            <td th:text="${customer.firstName}"></td>
+            <td th:text="${customer.lastName}"></td>
+            <td th:text="${customer.customerType.name}"></td>
+            <td><input type="checkbox" name="starredCustomer"
+                       th:value="${customer.id}"
+                       th:checked="${isStarred[iter.index]}"
+                />
+            </td>
+        </tr>
 
-</table>
+        <tr>
+            <td colspan="4">
+                <button>Save</button>
+            </td>
+        </tr>
+    </table>
+</form>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @GetMapping("/customer-list")
-    public ModelAndView getCustomerList(@CookieValue("starredCustomer") String starredCustomer) {
+    public ModelAndView getCustomerList(@CookieValue(value = "starredCustomer", defaultValue = "") String starredCustomer) {
         // Before Advice
         // logger.log(...)
         ModelAndView modelAndView = new ModelAndView("customer-list");
@@ -33,7 +33,7 @@ public class CustomerController {
         for (int i = 0; i < customers.size(); i++) {
             Customer customer = customers.get(i);
             for (String customerId : customerIds) {
-                if (customer.getId() == Long.parseLong(customerId)) {
+                if (!customerId.isEmpty() && customer.getId() == Long.parseLong(customerId)) {
                     isStarred[i] = true;
                 }
             }
