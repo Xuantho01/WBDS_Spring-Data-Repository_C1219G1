@@ -20,6 +20,11 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @GetMapping("/")
+    public String getHomepage() {
+        return "index";
+    }
+
     @GetMapping("/customer-list")
     public ModelAndView getCustomerList(@CookieValue(value = "starredCustomer", defaultValue = "") String starredCustomer) {
         // Before Advice
