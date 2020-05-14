@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -24,13 +24,11 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    Language
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="./?lang=en">English</a>
+                    <a class="dropdown-item" href="./?lang=vi">Tiếng Việt</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -46,8 +44,8 @@
 
 <div class="container">
 
-    <button onclick="getCustomerListJQuery()">Get Customer List</button>
-    <button onclick="createCustomer()">Create Customer</button>
+    <button onclick="getCustomerListJQuery()" th:text="#{getcustomerlist}"></button>
+    <button onclick="createCustomer()" th:text="#{createcustomer}"></button>
 
     <div id="customerList">
 
