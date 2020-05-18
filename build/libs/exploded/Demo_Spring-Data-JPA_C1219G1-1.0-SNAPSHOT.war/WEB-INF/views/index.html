@@ -42,7 +42,19 @@
     </div>
 </nav>
 
+
+
 <div class="container">
+
+    <div th:if="${#authorization.getAuthentication().isAuthenticated()}">
+        <div th:text="${#authentication.name}"></div>
+    </div>
+
+
+    <div th:if="!${#authorization.getAuthentication().isAuthenticated()}">
+<!--    <div sec:authorize="isAnonymous()">-->
+        Login as <a th:href="@{/user}">User</a> or <a th:href="@{/admin}">Admin</a>
+    </div>
 
     <button onclick="getCustomerListJQuery()" th:text="#{getcustomerlist}"></button>
     <button onclick="createCustomer()" th:text="#{createcustomer}"></button>

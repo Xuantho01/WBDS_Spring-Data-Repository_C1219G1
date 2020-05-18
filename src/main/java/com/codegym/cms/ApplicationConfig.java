@@ -2,6 +2,8 @@ package com.codegym.cms;
 
 import com.codegym.cms.aspect.MyLogger;
 import com.codegym.cms.formatter.CustomerTypeFormatter;
+import com.codegym.cms.service.AppUserService;
+import com.codegym.cms.service.AppUserServiceImpl;
 import com.codegym.cms.service.CustomerService;
 import com.codegym.cms.service.CustomerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -77,6 +80,7 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     public TemplateEngine templateEngine(){
         TemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
     }
 
@@ -166,6 +170,11 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         SessionLocaleResolver resolver = new SessionLocaleResolver();
         resolver.setDefaultLocale(new Locale("en"));
         return resolver;
+    }
+
+    @Bean
+    public AppUserService appUserService() {
+        return new AppUserServiceImpl();
     }
 
     //    @Bean

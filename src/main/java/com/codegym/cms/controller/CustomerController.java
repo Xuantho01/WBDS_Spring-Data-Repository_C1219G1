@@ -4,6 +4,7 @@ import com.codegym.cms.model.Customer;
 import com.codegym.cms.model.CustomerType;
 import com.codegym.cms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class CustomerController {
 
     @GetMapping("/customer-list")
     public ModelAndView getCustomerList(@CookieValue(value = "starredCustomer", defaultValue = "") String starredCustomer) {
+
         // Before Advice
         // logger.log(...)
         ModelAndView modelAndView = new ModelAndView("customer-list");
